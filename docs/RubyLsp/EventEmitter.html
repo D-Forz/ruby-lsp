@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class RubyLsp::EventEmitter - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
+</script>
+
+<script src="../js/navigation.js" defer></script>
+<script src="../js/search.js" defer></script>
+<script src="../js/search_index.js" defer></script>
+<script src="../js/searcher.js" defer></script>
+<script src="../js/darkfish.js" defer></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+<div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  <p class="link">SyntaxTree::Visitor
+</div>
+
+    
+<div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+    <li><span class="include">SyntaxTree::WithScope</span>
+  </ul>
+</div>
+
+    
+<div id="extends-section" class="nav-section">
+  <h3>Extended With Modules</h3>
+
+  <ul class="link-list">
+    <li><span class="extend">T::Sig</span>
+  </ul>
+</div>
+
+    
+<!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    <li ><a href="#method-i-emit_for_target">#emit_for_target</a>
+    <li ><a href="#method-i-register">#register</a>
+    <li class="calls-super" ><a href="#method-i-visit_binary">#visit_binary</a>
+    <li class="calls-super" ><a href="#method-i-visit_block_var">#visit_block_var</a>
+    <li class="calls-super" ><a href="#method-i-visit_call">#visit_call</a>
+    <li class="calls-super" ><a href="#method-i-visit_class">#visit_class</a>
+    <li class="calls-super" ><a href="#method-i-visit_command">#visit_command</a>
+    <li class="calls-super" ><a href="#method-i-visit_command_call">#visit_command_call</a>
+    <li class="calls-super" ><a href="#method-i-visit_comment">#visit_comment</a>
+    <li class="calls-super" ><a href="#method-i-visit_const">#visit_const</a>
+    <li class="calls-super" ><a href="#method-i-visit_const_path_field">#visit_const_path_field</a>
+    <li class="calls-super" ><a href="#method-i-visit_def">#visit_def</a>
+    <li class="calls-super" ><a href="#method-i-visit_field">#visit_field</a>
+    <li class="calls-super" ><a href="#method-i-visit_kw">#visit_kw</a>
+    <li class="calls-super" ><a href="#method-i-visit_lambda_var">#visit_lambda_var</a>
+    <li class="calls-super" ><a href="#method-i-visit_module">#visit_module</a>
+    <li class="calls-super" ><a href="#method-i-visit_params">#visit_params</a>
+    <li class="calls-super" ><a href="#method-i-visit_rescue">#visit_rescue</a>
+    <li class="calls-super" ><a href="#method-i-visit_top_const_field">#visit_top_const_field</a>
+    <li class="calls-super" ><a href="#method-i-visit_var_field">#visit_var_field</a>
+    <li class="calls-super" ><a href="#method-i-visit_var_ref">#visit_var_ref</a>
+    <li class="calls-super" ><a href="#method-i-visit_vcall">#visit_vcall</a>
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-RubyLsp::EventEmitter">
+  <h1 id="class-RubyLsp::EventEmitter" class="class">
+    class RubyLsp::EventEmitter
+  </h1>
+
+  <section class="description">
+    
+<p><a href="EventEmitter.html"><code>EventEmitter</code></a> is an intermediary between our requests and Syntax Tree visitors. It’s used to visit the document’s AST and emit events that the requests can listen to for providing functionality. Usages:</p>
+<ul><li>
+<p>For positional requests, locate the target node and use <code>emit_for_target</code> to fire events for each listener</p>
+</li><li>
+<p>For nonpositional requests, use <code>visit</code> to go through the AST, which will fire events for each listener as nodes are found</p>
+</li></ul>
+
+<h1 id="class-RubyLsp::EventEmitter-label-Example">Example<span><a href="#class-RubyLsp::EventEmitter-label-Example">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<pre class="ruby"><span class="ruby-identifier">target_node</span> = <span class="ruby-identifier">document</span>.<span class="ruby-identifier">locate_node</span>(<span class="ruby-identifier">position</span>)
+<span class="ruby-identifier">emitter</span> = <span class="ruby-constant">EventEmitter</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-identifier">listener</span> = <span class="ruby-constant">Requests</span><span class="ruby-operator">::</span><span class="ruby-constant">Hover</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">emitter</span>, <span class="ruby-ivar">@message_queue</span>)
+<span class="ruby-identifier">emitter</span>.<span class="ruby-identifier">emit_for_target</span>(<span class="ruby-identifier">target_node</span>)
+<span class="ruby-identifier">listener</span>.<span class="ruby-identifier">response</span>
+</pre>
+
+  </section>
+
+  <section id="5Buntitled-5D" class="documentation-section">
+
+
+
+
+
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+      <div id="method-c-new" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>
+  <span class="ruby-ivar">@listeners</span> = <span class="ruby-constant">T</span>.<span class="ruby-identifier">let</span>(<span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span>, <span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-identifier">k</span>] = [] }, <span class="ruby-constant">T</span><span class="ruby-operator">::</span><span class="ruby-constant">Hash</span>[<span class="ruby-constant">Symbol</span>, <span class="ruby-constant">T</span><span class="ruby-operator">::</span><span class="ruby-constant">Array</span>[<span class="ruby-constant">Listener</span>[<span class="ruby-constant">T</span>.<span class="ruby-identifier">untyped</span>]]])
+  <span class="ruby-keyword">super</span>()
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+    </section>
+
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+      <div id="method-i-emit_for_target" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">emit_for_target</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="emit_for_target-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">emit_for_target</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">node</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">SyntaxTree</span><span class="ruby-operator">::</span><span class="ruby-constant">Command</span>
+    <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_command</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_command</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">SyntaxTree</span><span class="ruby-operator">::</span><span class="ruby-constant">CallNode</span>
+    <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_call</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_call</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">SyntaxTree</span><span class="ruby-operator">::</span><span class="ruby-constant">TStringContent</span>
+    <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_tstring_content</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_tstring_content</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">SyntaxTree</span><span class="ruby-operator">::</span><span class="ruby-constant">ConstPathRef</span>
+    <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_const_path_ref</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_const_path_ref</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">SyntaxTree</span><span class="ruby-operator">::</span><span class="ruby-constant">Const</span>
+    <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_const</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_const</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-register" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">register</span><span
+              class="method-args">(listener, *events)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="register-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">register</span>(<span class="ruby-identifier">listener</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">events</span>)
+  <span class="ruby-identifier">events</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">event</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">must</span>(<span class="ruby-ivar">@listeners</span>[<span class="ruby-identifier">event</span>]) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">listener</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_binary" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_binary</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_binary-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 170</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_binary</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:after_binary</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">after_binary</span>(<span class="ruby-identifier">node</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_block_var" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_block_var</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_block_var-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 158</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_block_var</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_block_var</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_block_var</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_call" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_call</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_call-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 84</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_call</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_call</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_call</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:after_call</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">after_call</span>(<span class="ruby-identifier">node</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_class" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_class</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_class-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_class</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_class</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_class</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:after_class</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">after_class</span>(<span class="ruby-identifier">node</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_command" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_command</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_command-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 71</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_command</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_command</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_command</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:after_command</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">after_command</span>(<span class="ruby-identifier">node</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_command_call" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_command_call</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_command_call-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 78</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_command_call</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_command_call</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_command_call</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_comment" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_comment</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_comment-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 122</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_comment</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_comment</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_comment</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_const" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_const</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_const-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 176</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_const</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_const</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_const</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_const_path_field" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_const_path_field</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_const_path_field-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 97</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_const_path_field</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_const_path_field</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_const_path_field</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_def" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_def</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_def-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 109</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_def</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_def</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_def</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:after_def</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">after_def</span>(<span class="ruby-identifier">node</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_field" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_field</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_field-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 146</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_field</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_field</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_field</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_kw" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_kw</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_kw-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 134</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_kw</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_kw</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_kw</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_lambda_var" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_lambda_var</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_lambda_var-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 164</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_lambda_var</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_lambda_var</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_lambda_var</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_module" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_module</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_module-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 64</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_module</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_module</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_module</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:after_module</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">after_module</span>(<span class="ruby-identifier">node</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_params" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_params</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_params-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 140</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_params</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_params</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_params</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_rescue" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_rescue</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_rescue-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 128</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_rescue</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_rescue</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_rescue</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_top_const_field" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_top_const_field</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_top_const_field-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 103</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_top_const_field</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_top_const_field</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_top_const_field</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_var_field" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_var_field</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_var_field-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 116</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_var_field</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_var_field</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_var_field</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_var_ref" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_var_ref</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_var_ref-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_var_ref</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_var_ref</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_var_ref</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-visit_vcall" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">visit_vcall</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+
+          <div class="method-source-code" id="visit_vcall-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/event_emitter.rb, line 91</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">visit_vcall</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-ivar">@listeners</span>[<span class="ruby-value">:on_vcall</span>]&amp;.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">unsafe</span>(<span class="ruby-identifier">l</span>).<span class="ruby-identifier">on_vcall</span>(<span class="ruby-identifier">node</span>) }
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.5.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

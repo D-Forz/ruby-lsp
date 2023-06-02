@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class RubyLsp::Requests::SemanticHighlighting - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+  var index_rel_prefix = "../../";
+</script>
+
+<script src="../../js/navigation.js" defer></script>
+<script src="../../js/search.js" defer></script>
+<script src="../../js/search_index.js" defer></script>
+<script src="../../js/searcher.js" defer></script>
+<script src="../../js/darkfish.js" defer></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+<div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  <p class="link"><a href="../Listener.html">RubyLsp::Listener</a>
+</div>
+
+    
+    
+<div id="extends-section" class="nav-section">
+  <h3>Extended With Modules</h3>
+
+  <ul class="link-list">
+    <li><span class="extend">T::Sig</span>
+    <li><span class="extend">T::Generic</span>
+  </ul>
+</div>
+
+    
+<!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    <li ><a href="#method-i-add_token">#add_token</a>
+    <li ><a href="#method-i-after_binary">#after_binary</a>
+    <li ><a href="#method-i-on_block_var">#on_block_var</a>
+    <li ><a href="#method-i-on_call">#on_call</a>
+    <li ><a href="#method-i-on_class">#on_class</a>
+    <li ><a href="#method-i-on_command">#on_command</a>
+    <li ><a href="#method-i-on_command_call">#on_command_call</a>
+    <li ><a href="#method-i-on_const">#on_const</a>
+    <li ><a href="#method-i-on_def">#on_def</a>
+    <li ><a href="#method-i-on_field">#on_field</a>
+    <li ><a href="#method-i-on_kw">#on_kw</a>
+    <li ><a href="#method-i-on_lambda_var">#on_lambda_var</a>
+    <li ><a href="#method-i-on_module">#on_module</a>
+    <li ><a href="#method-i-on_params">#on_params</a>
+    <li ><a href="#method-i-on_var_field">#on_var_field</a>
+    <li ><a href="#method-i-on_var_ref">#on_var_ref</a>
+    <li ><a href="#method-i-on_vcall">#on_vcall</a>
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-RubyLsp::Requests::SemanticHighlighting">
+  <h1 id="class-RubyLsp::Requests::SemanticHighlighting" class="class">
+    class RubyLsp::Requests::SemanticHighlighting
+  </h1>
+
+  <section class="description">
+    
+<p><img src="../../semantic_highlighting.gif"></p>
+
+<p>The <a href="https://microsoft.github.io/language-server-protocol/specification#textDocument_semanticTokens">semantic highlighting</a> request informs the editor of the correct token types to provide consistent and accurate highlighting for themes.</p>
+
+<h1 id="class-RubyLsp::Requests::SemanticHighlighting-label-Example">Example<span><a href="#class-RubyLsp::Requests::SemanticHighlighting-label-Example">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<pre class="ruby"><span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">foo</span>
+  <span class="ruby-identifier">var</span> = <span class="ruby-value">1</span> <span class="ruby-comment"># --&gt; semantic highlighting: local variable</span>
+  <span class="ruby-identifier">some_invocation</span> <span class="ruby-comment"># --&gt; semantic highlighting: method invocation</span>
+  <span class="ruby-identifier">var</span> <span class="ruby-comment"># --&gt; semantic highlighting: local variable</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+  </section>
+
+  <section id="5Buntitled-5D" class="documentation-section">
+
+
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+        <dt id="ResponseType">ResponseType
+        <dd>
+        <dt id="SPECIAL_RUBY_METHODS">SPECIAL_RUBY_METHODS
+        <dd>
+        <dt id="TOKEN_MODIFIERS">TOKEN_MODIFIERS
+        <dd>
+        <dt id="TOKEN_TYPES">TOKEN_TYPES
+        <dd>
+      </dl>
+    </section>
+
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      <div id="attribute-i-response" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">response</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        </div>
+      </div>
+    </section>
+
+
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+      <div id="method-c-new" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(emitter, message_queue, range: nil)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="../Listener.html#method-c-new"><code>RubyLsp::Listener::new</code></a>
+            </div>
+
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 117</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">emitter</span>, <span class="ruby-identifier">message_queue</span>, <span class="ruby-value">range:</span> <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">emitter</span>, <span class="ruby-identifier">message_queue</span>)
+
+  <span class="ruby-ivar">@response</span> = <span class="ruby-constant">T</span>.<span class="ruby-identifier">let</span>([], <span class="ruby-constant">ResponseType</span>)
+  <span class="ruby-ivar">@range</span> = <span class="ruby-identifier">range</span>
+  <span class="ruby-ivar">@special_methods</span> = <span class="ruby-constant">T</span>.<span class="ruby-identifier">let</span>(<span class="ruby-keyword">nil</span>, <span class="ruby-constant">T</span>.<span class="ruby-identifier">nilable</span>(<span class="ruby-constant">T</span><span class="ruby-operator">::</span><span class="ruby-constant">Array</span>[<span class="ruby-constant">String</span>]))
+
+  <span class="ruby-identifier">emitter</span>.<span class="ruby-identifier">register</span>(
+    <span class="ruby-keyword">self</span>,
+    <span class="ruby-value">:after_binary</span>,
+    <span class="ruby-value">:on_block_var</span>,
+    <span class="ruby-value">:on_call</span>,
+    <span class="ruby-value">:on_class</span>,
+    <span class="ruby-value">:on_command</span>,
+    <span class="ruby-value">:on_command_call</span>,
+    <span class="ruby-value">:on_const</span>,
+    <span class="ruby-value">:on_def</span>,
+    <span class="ruby-value">:on_field</span>,
+    <span class="ruby-value">:on_kw</span>,
+    <span class="ruby-value">:on_lambda_var</span>,
+    <span class="ruby-value">:on_module</span>,
+    <span class="ruby-value">:on_params</span>,
+    <span class="ruby-value">:on_var_field</span>,
+    <span class="ruby-value">:on_var_ref</span>,
+    <span class="ruby-value">:on_vcall</span>,
+  )
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+    </section>
+
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+      <div id="method-i-add_token" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">add_token</span><span
+              class="method-args">(location, type, modifiers = [])</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="add_token-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 327</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_token</span>(<span class="ruby-identifier">location</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">modifiers</span> = [])
+  <span class="ruby-identifier">length</span> = <span class="ruby-identifier">location</span>.<span class="ruby-identifier">end_char</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">location</span>.<span class="ruby-identifier">start_char</span>
+  <span class="ruby-identifier">modifiers_indices</span> = <span class="ruby-identifier">modifiers</span>.<span class="ruby-identifier">filter_map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">modifier</span><span class="ruby-operator">|</span> <span class="ruby-constant">TOKEN_MODIFIERS</span>[<span class="ruby-identifier">modifier</span>] }
+  <span class="ruby-ivar">@response</span>.<span class="ruby-identifier">push</span>(
+    <span class="ruby-constant">SemanticToken</span>.<span class="ruby-identifier">new</span>(
+      <span class="ruby-value">location:</span> <span class="ruby-identifier">location</span>,
+      <span class="ruby-value">length:</span> <span class="ruby-identifier">length</span>,
+      <span class="ruby-value">type:</span> <span class="ruby-constant">T</span>.<span class="ruby-identifier">must</span>(<span class="ruby-constant">TOKEN_TYPES</span>[<span class="ruby-identifier">type</span>]),
+      <span class="ruby-value">modifier:</span> <span class="ruby-identifier">modifiers_indices</span>,
+    ),
+  )
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-after_binary" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">after_binary</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="after_binary-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 286</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">after_binary</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-comment"># You can only capture local variables with regexp by using the =~ operator</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">operator</span> <span class="ruby-operator">==</span> <span class="ruby-value">:=~</span>
+
+  <span class="ruby-identifier">left</span> = <span class="ruby-identifier">node</span>.<span class="ruby-identifier">left</span>
+  <span class="ruby-comment"># The regexp needs to be on the left hand side of the =~ for local variable capture</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">left</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">SyntaxTree</span><span class="ruby-operator">::</span><span class="ruby-constant">RegexpLiteral</span>)
+
+  <span class="ruby-identifier">parts</span> = <span class="ruby-identifier">left</span>.<span class="ruby-identifier">parts</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">parts</span>.<span class="ruby-identifier">one?</span>
+
+  <span class="ruby-identifier">content</span> = <span class="ruby-identifier">parts</span>.<span class="ruby-identifier">first</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">content</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">SyntaxTree</span><span class="ruby-operator">::</span><span class="ruby-constant">TStringContent</span>)
+
+  <span class="ruby-comment"># For each capture name we find in the regexp, look for a local in the current_scope</span>
+  <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">content</span>.<span class="ruby-identifier">value</span>, <span class="ruby-constant">Regexp</span><span class="ruby-operator">::</span><span class="ruby-constant">FIXEDENCODING</span>).<span class="ruby-identifier">names</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">local</span> = <span class="ruby-ivar">@emitter</span>.<span class="ruby-identifier">current_scope</span>.<span class="ruby-identifier">find_local</span>(<span class="ruby-identifier">name</span>)
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">local</span>
+
+    <span class="ruby-identifier">local</span>.<span class="ruby-identifier">definitions</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">definition</span><span class="ruby-operator">|</span> <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">definition</span>, <span class="ruby-value">:variable</span>) }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_block_var" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_block_var</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_block_var-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 254</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_block_var</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">locals</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">local</span><span class="ruby-operator">|</span> <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">local</span>.<span class="ruby-identifier">location</span>, <span class="ruby-value">:variable</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_call" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_call</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_call-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 146</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_call</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">visible?</span>(<span class="ruby-identifier">node</span>, <span class="ruby-ivar">@range</span>)
+
+  <span class="ruby-identifier">message</span> = <span class="ruby-identifier">node</span>.<span class="ruby-identifier">message</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">message</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">special_method?</span>(<span class="ruby-identifier">message</span>.<span class="ruby-identifier">value</span>)
+    <span class="ruby-identifier">type</span> = <span class="ruby-constant">Support</span><span class="ruby-operator">::</span><span class="ruby-constant">Sorbet</span>.<span class="ruby-identifier">annotation?</span>(<span class="ruby-identifier">node</span>) <span class="ruby-operator">?</span> <span class="ruby-value">:type</span> <span class="ruby-operator">:</span> <span class="ruby-value">:method</span>
+    <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">message</span>.<span class="ruby-identifier">location</span>, <span class="ruby-identifier">type</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_class" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_class</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_class-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 310</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_class</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">visible?</span>(<span class="ruby-identifier">node</span>, <span class="ruby-ivar">@range</span>)
+
+  <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">constant</span>.<span class="ruby-identifier">location</span>, <span class="ruby-value">:class</span>, [<span class="ruby-value">:declaration</span>])
+
+  <span class="ruby-identifier">superclass</span> = <span class="ruby-identifier">node</span>.<span class="ruby-identifier">superclass</span>
+  <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">location</span>, <span class="ruby-value">:class</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">superclass</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_command" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_command</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_command-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 157</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_command</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">visible?</span>(<span class="ruby-identifier">node</span>, <span class="ruby-ivar">@range</span>)
+
+  <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">message</span>.<span class="ruby-identifier">location</span>, <span class="ruby-value">:method</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">special_method?</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">message</span>.<span class="ruby-identifier">value</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_command_call" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_command_call</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_command_call-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 164</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_command_call</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">visible?</span>(<span class="ruby-identifier">node</span>, <span class="ruby-ivar">@range</span>)
+
+  <span class="ruby-identifier">message</span> = <span class="ruby-identifier">node</span>.<span class="ruby-identifier">message</span>
+  <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">message</span>.<span class="ruby-identifier">location</span>, <span class="ruby-value">:method</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">message</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_const" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_const</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_const-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 172</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_const</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">visible?</span>(<span class="ruby-identifier">node</span>, <span class="ruby-ivar">@range</span>)
+  <span class="ruby-comment"># When finding a module or class definition, we will have already pushed a token related to this constant. We</span>
+  <span class="ruby-comment"># need to look at the previous two tokens and if they match this locatione exactly, avoid pushing another token</span>
+  <span class="ruby-comment"># on top of the previous one</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@response</span>.<span class="ruby-identifier">last</span>(<span class="ruby-value">2</span>).<span class="ruby-identifier">any?</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">token</span><span class="ruby-operator">|</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">location</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">location</span> }
+
+  <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">location</span>, <span class="ruby-value">:namespace</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_def" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_def</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_def-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 183</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_def</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">visible?</span>(<span class="ruby-identifier">node</span>, <span class="ruby-ivar">@range</span>)
+
+  <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">location</span>, <span class="ruby-value">:method</span>, [<span class="ruby-value">:declaration</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_field" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_field</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_field-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 220</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_field</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">visible?</span>(<span class="ruby-identifier">node</span>, <span class="ruby-ivar">@range</span>)
+
+  <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">location</span>, <span class="ruby-value">:method</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_kw" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_kw</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_kw-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 190</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_kw</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">visible?</span>(<span class="ruby-identifier">node</span>, <span class="ruby-ivar">@range</span>)
+
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">value</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;self&quot;</span>
+    <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">location</span>, <span class="ruby-value">:variable</span>, [<span class="ruby-value">:default_library</span>])
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_lambda_var" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_lambda_var</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_lambda_var-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 260</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_lambda_var</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">locals</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">local</span><span class="ruby-operator">|</span> <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">local</span>.<span class="ruby-identifier">location</span>, <span class="ruby-value">:variable</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_module" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_module</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_module-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 320</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_module</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">visible?</span>(<span class="ruby-identifier">node</span>, <span class="ruby-ivar">@range</span>)
+
+  <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">constant</span>.<span class="ruby-identifier">location</span>, <span class="ruby-value">:namespace</span>, [<span class="ruby-value">:declaration</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_params" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_params</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_params-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 200</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_params</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">visible?</span>(<span class="ruby-identifier">node</span>, <span class="ruby-ivar">@range</span>)
+
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">keywords</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">keyword</span>, <span class="ruby-operator">*</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">location</span> = <span class="ruby-identifier">keyword</span>.<span class="ruby-identifier">location</span>
+    <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">location_without_colon</span>(<span class="ruby-identifier">location</span>), <span class="ruby-value">:parameter</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">requireds</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">required</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">required</span>.<span class="ruby-identifier">location</span>, <span class="ruby-value">:parameter</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">rest</span> = <span class="ruby-identifier">node</span>.<span class="ruby-identifier">keyword_rest</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">rest</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">rest</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">SyntaxTree</span><span class="ruby-operator">::</span><span class="ruby-constant">ArgsForward</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">rest</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>)
+    <span class="ruby-identifier">name</span> = <span class="ruby-identifier">rest</span>.<span class="ruby-identifier">name</span>
+    <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">name</span>.<span class="ruby-identifier">location</span>, <span class="ruby-value">:parameter</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_var_field" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_var_field</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_var_field-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 227</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_var_field</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">visible?</span>(<span class="ruby-identifier">node</span>, <span class="ruby-ivar">@range</span>)
+
+  <span class="ruby-identifier">value</span> = <span class="ruby-identifier">node</span>.<span class="ruby-identifier">value</span>
+
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">value</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">SyntaxTree</span><span class="ruby-operator">::</span><span class="ruby-constant">Ident</span>
+    <span class="ruby-identifier">type</span> = <span class="ruby-identifier">type_for_local</span>(<span class="ruby-identifier">value</span>)
+    <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">value</span>.<span class="ruby-identifier">location</span>, <span class="ruby-identifier">type</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_var_ref" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_var_ref</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_var_ref-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 240</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_var_ref</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">visible?</span>(<span class="ruby-identifier">node</span>, <span class="ruby-ivar">@range</span>)
+
+  <span class="ruby-identifier">value</span> = <span class="ruby-identifier">node</span>.<span class="ruby-identifier">value</span>
+
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">value</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">SyntaxTree</span><span class="ruby-operator">::</span><span class="ruby-constant">Ident</span>
+    <span class="ruby-identifier">type</span> = <span class="ruby-identifier">type_for_local</span>(<span class="ruby-identifier">value</span>)
+    <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">value</span>.<span class="ruby-identifier">location</span>, <span class="ruby-identifier">type</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-on_vcall" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">on_vcall</span><span
+              class="method-args">(node)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="on_vcall-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/requests/semantic_highlighting.rb, line 265</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">on_vcall</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">visible?</span>(<span class="ruby-identifier">node</span>, <span class="ruby-ivar">@range</span>)
+
+  <span class="ruby-comment"># A VCall may exist as a local in the current_scope. This happens when used named capture groups in a regexp</span>
+  <span class="ruby-identifier">ident</span> = <span class="ruby-identifier">node</span>.<span class="ruby-identifier">value</span>
+  <span class="ruby-identifier">value</span> = <span class="ruby-identifier">ident</span>.<span class="ruby-identifier">value</span>
+  <span class="ruby-identifier">local</span> = <span class="ruby-ivar">@emitter</span>.<span class="ruby-identifier">current_scope</span>.<span class="ruby-identifier">find_local</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">local</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">special_method?</span>(<span class="ruby-identifier">value</span>)
+
+  <span class="ruby-identifier">type</span> = <span class="ruby-keyword">if</span> <span class="ruby-identifier">local</span>
+    <span class="ruby-value">:variable</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-constant">Support</span><span class="ruby-operator">::</span><span class="ruby-constant">Sorbet</span>.<span class="ruby-identifier">annotation?</span>(<span class="ruby-identifier">node</span>)
+    <span class="ruby-value">:type</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-value">:method</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">value</span>.<span class="ruby-identifier">location</span>, <span class="ruby-identifier">type</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.5.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

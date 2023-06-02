@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class RubyLsp::Server - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
+</script>
+
+<script src="../js/navigation.js" defer></script>
+<script src="../js/search.js" defer></script>
+<script src="../js/search_index.js" defer></script>
+<script src="../js/searcher.js" defer></script>
+<script src="../js/darkfish.js" defer></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+<div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  <p class="link">Object
+</div>
+
+    
+    
+<div id="extends-section" class="nav-section">
+  <h3>Extended With Modules</h3>
+
+  <ul class="link-list">
+    <li><span class="extend">T::Sig</span>
+  </ul>
+</div>
+
+    
+<!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    <li ><a href="#method-c-new">::new</a>
+    <li ><a href="#method-i-start">#start</a>
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-RubyLsp::Server">
+  <h1 id="class-RubyLsp::Server" class="class">
+    class RubyLsp::Server
+  </h1>
+
+  <section class="description">
+    
+<p>rubocop:enable RubyLsp/UseLanguageServerAliases</p>
+
+  </section>
+
+  <section id="5Buntitled-5D" class="documentation-section">
+
+
+
+
+
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+      <div id="method-c-new" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/server.rb, line 15</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>
+  <span class="ruby-ivar">@writer</span> = <span class="ruby-constant">T</span>.<span class="ruby-identifier">let</span>(<span class="ruby-constant">Transport</span><span class="ruby-operator">::</span><span class="ruby-constant">Stdio</span><span class="ruby-operator">::</span><span class="ruby-constant">Writer</span>.<span class="ruby-identifier">new</span>, <span class="ruby-constant">Transport</span><span class="ruby-operator">::</span><span class="ruby-constant">Stdio</span><span class="ruby-operator">::</span><span class="ruby-constant">Writer</span>)
+  <span class="ruby-ivar">@reader</span> = <span class="ruby-constant">T</span>.<span class="ruby-identifier">let</span>(<span class="ruby-constant">Transport</span><span class="ruby-operator">::</span><span class="ruby-constant">Stdio</span><span class="ruby-operator">::</span><span class="ruby-constant">Reader</span>.<span class="ruby-identifier">new</span>, <span class="ruby-constant">Transport</span><span class="ruby-operator">::</span><span class="ruby-constant">Stdio</span><span class="ruby-operator">::</span><span class="ruby-constant">Reader</span>)
+  <span class="ruby-ivar">@store</span> = <span class="ruby-constant">T</span>.<span class="ruby-identifier">let</span>(<span class="ruby-constant">Store</span>.<span class="ruby-identifier">new</span>, <span class="ruby-constant">Store</span>)
+
+  <span class="ruby-comment"># The job queue is the actual list of requests we have to process</span>
+  <span class="ruby-ivar">@job_queue</span> = <span class="ruby-constant">T</span>.<span class="ruby-identifier">let</span>(<span class="ruby-constant">Thread</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>.<span class="ruby-identifier">new</span>, <span class="ruby-constant">Thread</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>)
+  <span class="ruby-comment"># The jobs hash is just a way of keeping a handle to jobs based on the request ID, so we can cancel them</span>
+  <span class="ruby-ivar">@jobs</span> = <span class="ruby-constant">T</span>.<span class="ruby-identifier">let</span>({}, <span class="ruby-constant">T</span><span class="ruby-operator">::</span><span class="ruby-constant">Hash</span>[<span class="ruby-constant">T</span>.<span class="ruby-identifier">any</span>(<span class="ruby-constant">String</span>, <span class="ruby-constant">Integer</span>), <span class="ruby-constant">Job</span>])
+  <span class="ruby-ivar">@mutex</span> = <span class="ruby-constant">T</span>.<span class="ruby-identifier">let</span>(<span class="ruby-constant">Mutex</span>.<span class="ruby-identifier">new</span>, <span class="ruby-constant">Mutex</span>)
+  <span class="ruby-ivar">@worker</span> = <span class="ruby-constant">T</span>.<span class="ruby-identifier">let</span>(<span class="ruby-identifier">new_worker</span>, <span class="ruby-constant">Thread</span>)
+
+  <span class="ruby-comment"># The messages queue includes requests and notifications to be sent to the client</span>
+  <span class="ruby-ivar">@message_queue</span> = <span class="ruby-constant">T</span>.<span class="ruby-identifier">let</span>(<span class="ruby-constant">Thread</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>.<span class="ruby-identifier">new</span>, <span class="ruby-constant">Thread</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>)
+
+  <span class="ruby-comment"># Create a thread to watch the messages queue and send them to the client</span>
+  <span class="ruby-ivar">@message_dispatcher</span> = <span class="ruby-constant">T</span>.<span class="ruby-identifier">let</span>(
+    <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">current_request_id</span> = <span class="ruby-value">1</span>
+
+      <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">message</span> = <span class="ruby-ivar">@message_queue</span>.<span class="ruby-identifier">pop</span>
+        <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">message</span>.<span class="ruby-identifier">nil?</span>
+
+        <span class="ruby-ivar">@mutex</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-keyword">do</span>
+          <span class="ruby-keyword">case</span> <span class="ruby-identifier">message</span>
+          <span class="ruby-keyword">when</span> <span class="ruby-constant">Notification</span>
+            <span class="ruby-ivar">@writer</span>.<span class="ruby-identifier">write</span>(<span class="ruby-value">method:</span> <span class="ruby-identifier">message</span>.<span class="ruby-identifier">message</span>, <span class="ruby-value">params:</span> <span class="ruby-identifier">message</span>.<span class="ruby-identifier">params</span>)
+          <span class="ruby-keyword">when</span> <span class="ruby-constant">Request</span>
+            <span class="ruby-ivar">@writer</span>.<span class="ruby-identifier">write</span>(<span class="ruby-value">id:</span> <span class="ruby-identifier">current_request_id</span>, <span class="ruby-value">method:</span> <span class="ruby-identifier">message</span>.<span class="ruby-identifier">message</span>, <span class="ruby-value">params:</span> <span class="ruby-identifier">message</span>.<span class="ruby-identifier">params</span>)
+            <span class="ruby-identifier">current_request_id</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>,
+    <span class="ruby-constant">Thread</span>,
+  )
+
+  <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">main</span>.<span class="ruby-identifier">priority</span> = <span class="ruby-value">1</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+    </section>
+
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+      <div id="method-i-start" class="method-detail ">
+        <div class="method-header">
+          <div class="method-heading">
+            <span class="method-name">start</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+        </div>
+
+        <div class="method-description">
+          
+
+          <div class="method-source-code" id="start-source">
+            <pre><span class="ruby-comment"># File lib/ruby_lsp/server.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">start</span>
+  <span class="ruby-identifier">warn</span>(<span class="ruby-string">&quot;Starting Ruby LSP...&quot;</span>)
+
+  <span class="ruby-comment"># Requests that have to be executed sequentially or in the main process are implemented here. All other requests</span>
+  <span class="ruby-comment"># fall under the else branch which just pushes requests to the queue</span>
+  <span class="ruby-ivar">@reader</span>.<span class="ruby-identifier">read</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">request</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">request</span>[<span class="ruby-value">:method</span>]
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;initialize&quot;</span>, <span class="ruby-string">&quot;initialized&quot;</span>, <span class="ruby-string">&quot;textDocument/didOpen&quot;</span>, <span class="ruby-string">&quot;textDocument/didClose&quot;</span>, <span class="ruby-string">&quot;textDocument/didChange&quot;</span>
+      <span class="ruby-identifier">result</span> = <span class="ruby-constant">Executor</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@store</span>, <span class="ruby-ivar">@message_queue</span>).<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">request</span>)
+      <span class="ruby-identifier">finalize_request</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">request</span>)
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;$/cancelRequest&quot;</span>
+      <span class="ruby-comment"># Cancel the job if it&#39;s still in the queue</span>
+      <span class="ruby-ivar">@mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@jobs</span>[<span class="ruby-identifier">request</span>[<span class="ruby-value">:params</span>][<span class="ruby-value">:id</span>]]&amp;.<span class="ruby-identifier">cancel</span> }
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;shutdown&quot;</span>
+      <span class="ruby-identifier">warn</span>(<span class="ruby-string">&quot;Shutting down Ruby LSP...&quot;</span>)
+
+      <span class="ruby-ivar">@message_queue</span>.<span class="ruby-identifier">close</span>
+      <span class="ruby-comment"># Close the queue so that we can no longer receive items</span>
+      <span class="ruby-ivar">@job_queue</span>.<span class="ruby-identifier">close</span>
+      <span class="ruby-comment"># Clear any remaining jobs so that the thread can terminate</span>
+      <span class="ruby-ivar">@job_queue</span>.<span class="ruby-identifier">clear</span>
+      <span class="ruby-ivar">@jobs</span>.<span class="ruby-identifier">clear</span>
+      <span class="ruby-comment"># Wait until the thread is finished</span>
+      <span class="ruby-ivar">@worker</span>.<span class="ruby-identifier">join</span>
+      <span class="ruby-ivar">@message_dispatcher</span>.<span class="ruby-identifier">join</span>
+      <span class="ruby-ivar">@store</span>.<span class="ruby-identifier">clear</span>
+
+      <span class="ruby-identifier">finalize_request</span>(<span class="ruby-constant">Result</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">response:</span> <span class="ruby-keyword">nil</span>), <span class="ruby-identifier">request</span>)
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;exit&quot;</span>
+      <span class="ruby-comment"># We return zero if shutdown has already been received or one otherwise as per the recommendation in the spec</span>
+      <span class="ruby-comment"># https://microsoft.github.io/language-server-protocol/specification/#exit</span>
+      <span class="ruby-identifier">status</span> = <span class="ruby-ivar">@store</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">warn</span>(<span class="ruby-node">&quot;Shutdown complete with status #{status}&quot;</span>)
+      <span class="ruby-identifier">exit</span>(<span class="ruby-identifier">status</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-comment"># Default case: push the request to the queue to be executed by the worker</span>
+      <span class="ruby-identifier">job</span> = <span class="ruby-constant">Job</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">request:</span> <span class="ruby-identifier">request</span>, <span class="ruby-value">cancelled:</span> <span class="ruby-keyword">false</span>)
+
+      <span class="ruby-ivar">@mutex</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-comment"># Remember a handle to the job, so that we can cancel it</span>
+        <span class="ruby-ivar">@jobs</span>[<span class="ruby-identifier">request</span>[<span class="ruby-value">:id</span>]] = <span class="ruby-identifier">job</span>
+
+        <span class="ruby-comment"># We must parse the document under a mutex lock or else we might switch threads and accept text edits in the</span>
+        <span class="ruby-comment"># source. Altering the source reference during parsing will put the parser in an invalid internal state,</span>
+        <span class="ruby-comment"># since it started parsing with one source but then it changed in the middle</span>
+        <span class="ruby-identifier">uri</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">dig</span>(<span class="ruby-value">:params</span>, <span class="ruby-value">:textDocument</span>, <span class="ruby-value">:uri</span>)
+        <span class="ruby-ivar">@store</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">uri</span>).<span class="ruby-identifier">parse</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">uri</span>
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-ivar">@job_queue</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">job</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.5.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
