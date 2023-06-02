@@ -29,6 +29,20 @@ module RubyLsp
       class Error < StandardError; end
       class InvalidFormatter < StandardError; end
 
+      @formatters = T.let({}, T::Hash[String, Support::FormatterRunner])
+
+      class << self
+        extend T::Sig
+
+        sig { returns(T::Hash[String, Support::FormatterRunner]) }
+        attr_reader :formatters
+
+        sig { params(identifier: String, instance: Support::FormatterRunner).void }
+        def register_formatter(identifier, instance)
+          @formatters[identifier] = instance
+        end
+      end
+
       extend T::Sig
 
       sig { params(document: Document, formatter: String).void }
@@ -75,7 +89,10 @@ module RubyLsp
         when "syntax_tree"
           Support::SyntaxTreeFormattingRunner.instance.run(@uri, @document)
         else
-          raise InvalidFormatter, "Unknown formatter: #{@formatter}"
+          formatter = Formatting.formatters[@formatter]
+          raise InvalidFormatter, "Formatter is not available: #{@formatter}" unless formatter
+
+          formatter.run(@uri, @document)
         end
       end
     end

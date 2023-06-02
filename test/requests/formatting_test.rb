@@ -137,6 +137,21 @@ class FormattingTest < Minitest::Test
     end
   end
 
+  def test_using_a_custom_formatter
+    require "singleton"
+    formatter_class = Class.new do
+      include Singleton
+      include RubyLsp::Requests::Support::FormatterRunner
+
+      def run(uri, document)
+        "#{document.source}\n# formatter by my-custom-formatter"
+      end
+    end
+
+    RubyLsp::Requests::Formatting.register_formatter("my-custom-formatter", T.unsafe(formatter_class).instance)
+    assert_includes(formatted_document("my-custom-formatter"), "# formatter by my-custom-formatter")
+  end
+
   private
 
   def formatted_document(formatter)
